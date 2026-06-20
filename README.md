@@ -25,25 +25,25 @@ graph TB
     subgraph "Capa de Presentación"
         A[Controladores REST]
     end
-    
+
     subgraph "Capa de Negocio"
         B[Servicios]
         C[DTOs]
         D[Eventos de Dominio]
     end
-    
+
     subgraph "Capa de Persistencia"
         E[Repositorios JPA]
         F[Entidades]
     end
-    
+
     subgraph "Infraestructura"
         G[Seguridad JWT]
         H[Configuración]
         I[Excepciones]
         J[Utilidades]
     end
-    
+
     A --> B
     B --> C
     B --> D
@@ -57,15 +57,15 @@ graph TB
 
 ### Patrones de Diseño Sugeridos
 
-| Patrón | Propósito | Ejemplo de Uso |
-|--------|-----------|----------------|
-| **DTO** | Desacoplar capa API de dominio | `ClienteRequest`, `EstadiaResponse` |
-| **Mapper (MapStruct)** | Conversión eficiente entre Entidades y DTOs | `ClienteMapper`, `EstadiaMapper` |
-| **Strategy** | Cálculo de tarifas variables | `TarifaPorHoras`, `TarifaPorNoche` |
-| **Repository** | Acceso a datos | `HabitacionRepository`, `ClienteRepository` |
-| **Factory** | Creación de facturas/reportes | `FacturaFactory`, `ReporteFactory` |
-| **Observer/Event** | Desacoplar acciones post-transacción | `CheckoutEvent`, `VentaEvent` |
-| **Dependency Injection** | Inversión de control | `@Autowired`, `@Service` |
+| Patrón                   | Propósito                                   | Ejemplo de Uso                              |
+| ------------------------ | ------------------------------------------- | ------------------------------------------- |
+| **DTO**                  | Desacoplar capa API de dominio              | `ClienteRequest`, `EstadiaResponse`         |
+| **Mapper (MapStruct)**   | Conversión eficiente entre Entidades y DTOs | `ClienteMapper`, `EstadiaMapper`            |
+| **Strategy**             | Cálculo de tarifas variables                | `TarifaPorHoras`, `TarifaPorNoche`          |
+| **Repository**           | Acceso a datos                              | `HabitacionRepository`, `ClienteRepository` |
+| **Factory**              | Creación de facturas/reportes               | `FacturaFactory`, `ReporteFactory`          |
+| **Observer/Event**       | Desacoplar acciones post-transacción        | `CheckoutEvent`, `VentaEvent`               |
+| **Dependency Injection** | Inversión de control                        | `@Autowired`, `@Service`                    |
 
 ---
 
@@ -81,7 +81,7 @@ graph TD
     A --> G[exception]
     A --> H[security]
     A --> I[util]
-    
+
     C --> CA[auth]
     C --> CH[habitacion]
     C --> CC[cliente]
@@ -92,7 +92,7 @@ graph TD
     C --> CT[turno]
     C --> CEMP[empleado]
     C --> CEST[estadistica]
-    
+
     D --> DA[auth]
     D --> DH[habitacion]
     D --> DC[cliente]
@@ -104,14 +104,14 @@ graph TD
     D --> DEMP[empleado]
     D --> DEST[estadistica]
     D --> DINV[inventario]
-    
+
     F --> FE[entity]
     F --> FEN[enums]
     F --> FD[dto]
-    
+
     FD --> FDR[request]
     FD --> FDS[response]
-    
+
     H --> HJWT[JwtAuthenticationFilter]
     H --> HUD[UserDetailsServiceImpl]
     H --> HAD[CustomAccessDeniedHandler]
@@ -260,7 +260,7 @@ erDiagram
         RolEmpleado rol
         boolean activo
     }
-    
+
     EMPLEADO ||--o{ TURNO : "registra"
     EMPLEADO {
         Long id PK
@@ -270,7 +270,7 @@ erDiagram
         Turno turnoAsignado
         LocalDateTime fechaIngreso
     }
-    
+
     TURNO ||--o{ ESTADIA : "contiene"
     TURNO ||--o{ VENTA : "contiene"
     TURNO ||--o{ GASTO : "contiene"
@@ -281,7 +281,7 @@ erDiagram
         Turno tipoTurno
         EstadoTurno estado
     }
-    
+
     CLIENTE ||--o{ ESTADIA : "realiza"
     CLIENTE ||--o{ VENTA : "realiza"
     CLIENTE {
@@ -293,7 +293,7 @@ erDiagram
         boolean esProblematico
         String motivoProblema
     }
-    
+
     HABITACION ||--o{ ESTADIA : "tiene"
     HABITACION {
         Long id PK
@@ -304,7 +304,7 @@ erDiagram
         BigDecimal precioPorNoche
         BigDecimal precioPorHoras
     }
-    
+
     ESTADIA ||--o{ VENTA : "genera"
     ESTADIA {
         Long id PK
@@ -315,14 +315,14 @@ erDiagram
         BigDecimal total
         EstadoEstadia estado
     }
-    
+
     VENTA ||--o{ DETALLE_VENTA : "tiene"
     VENTA {
         Long id PK
         LocalDateTime fechaHora
         BigDecimal total
     }
-    
+
     EXTRA ||--o{ DETALLE_VENTA : "incluye"
     EXTRA {
         Long id PK
@@ -332,14 +332,14 @@ erDiagram
         Integer stockActual
         Integer stockMinimo
     }
-    
+
     DETALLE_VENTA {
         Long id PK
         Integer cantidad
         BigDecimal precioUnitario
         BigDecimal subtotal
     }
-    
+
     GASTO {
         Long id PK
         LocalDateTime fechaHora
@@ -352,93 +352,102 @@ erDiagram
 ### Lista de Entidades con sus Atributos
 
 #### 1. Usuario
-| Atributo | Tipo | Descripción |
-|----------|------|-------------|
-| id | Long | Identificador único |
-| username | String | Nombre de usuario (unique) |
-| password | String | Contraseña hasheada |
-| email | String | Correo electrónico |
-| rol | RolEmpleado | ADMIN, RECEPCIONISTA, MANTENIMIENTO, GERENTE |
-| activo | boolean | Indica si el usuario está activo |
+
+| Atributo | Tipo        | Descripción                                  |
+| -------- | ----------- | -------------------------------------------- |
+| id       | Long        | Identificador único                          |
+| username | String      | Nombre de usuario (unique)                   |
+| password | String      | Contraseña hasheada                          |
+| email    | String      | Correo electrónico                           |
+| rol      | RolEmpleado | ADMIN, RECEPCIONISTA, MANTENIMIENTO, GERENTE |
+| activo   | boolean     | Indica si el usuario está activo             |
 
 #### 2. Empleado
-| Atributo | Tipo | Descripción |
-|----------|------|-------------|
-| id | Long | Identificador único |
-| nombreCompleto | String | Nombres y apellidos |
-| dni | String | Documento de identidad (unique) |
-| telefono | String | Número de contacto |
-| turnoAsignado | Turno | MATUTINO, VESPERTINO, NOCTURNO |
-| fechaIngreso | LocalDateTime | Fecha de registro en el sistema |
+
+| Atributo       | Tipo          | Descripción                     |
+| -------------- | ------------- | ------------------------------- |
+| id             | Long          | Identificador único             |
+| nombreCompleto | String        | Nombres y apellidos             |
+| dni            | String        | Documento de identidad (unique) |
+| telefono       | String        | Número de contacto              |
+| turnoAsignado  | Turno         | MATUTINO, VESPERTINO, NOCTURNO  |
+| fechaIngreso   | LocalDateTime | Fecha de registro en el sistema |
 
 #### 3. Cliente
-| Atributo | Tipo | Descripción |
-|----------|------|-------------|
-| id | Long | Identificador único |
-| dni | String | Documento de identidad (unique) |
-| nombreCompleto | String | Nombres y apellidos |
-| telefono | String | Número de contacto |
-| email | String | Correo electrónico |
-| esProblematico | boolean | Flag de cliente problemático |
-| motivoProblema | String | Razón de ser problemático |
+
+| Atributo       | Tipo    | Descripción                     |
+| -------------- | ------- | ------------------------------- |
+| id             | Long    | Identificador único             |
+| dni            | String  | Documento de identidad (unique) |
+| nombreCompleto | String  | Nombres y apellidos             |
+| telefono       | String  | Número de contacto              |
+| email          | String  | Correo electrónico              |
+| esProblematico | boolean | Flag de cliente problemático    |
+| motivoProblema | String  | Razón de ser problemático       |
 
 #### 4. Habitacion
-| Atributo | Tipo | Descripción |
-|----------|------|-------------|
-| id | Long | Identificador único |
-| numero | String | Número de habitación (unique) |
-| tipo | TipoHabitacion | PERSONAL, MATRIMONIAL, TEMATICA, DOBLE, TRIPLE |
-| estado | EstadoHabitacion | DISPONIBLE, LIMPIEZA, OCUPADA, MANTENIMIENTO, RESERVADA |
-| descripcion | String | Descripción de la habitación |
-| precioPorNoche | BigDecimal | Tarifa por noche |
-| precioPorHoras | BigDecimal | Tarifa por horas |
-| caracteristicas | String | Características especiales |
+
+| Atributo        | Tipo             | Descripción                                             |
+| --------------- | ---------------- | ------------------------------------------------------- |
+| id              | Long             | Identificador único                                     |
+| numero          | String           | Número de habitación (unique)                           |
+| tipo            | TipoHabitacion   | PERSONAL, MATRIMONIAL, TEMATICA, DOBLE, TRIPLE          |
+| estado          | EstadoHabitacion | DISPONIBLE, LIMPIEZA, OCUPADA, MANTENIMIENTO, RESERVADA |
+| descripcion     | String           | Descripción de la habitación                            |
+| precioPorNoche  | BigDecimal       | Tarifa por noche                                        |
+| precioPorHoras  | BigDecimal       | Tarifa por horas                                        |
+| caracteristicas | String           | Características especiales                              |
 
 #### 5. Estadia
-| Atributo | Tipo | Descripción |
-|----------|------|-------------|
-| id | Long | Identificador único |
-| fechaHoraInicio | LocalDateTime | Fecha y hora de check-in |
-| fechaHoraFin | LocalDateTime | Fecha y hora de check-out |
-| modoUso | ModoUso | HORAS, NOCHE |
-| tarifaAplicada | BigDecimal | Tarifa que se aplicó |
-| total | BigDecimal | Total a pagar |
-| estado | EstadoEstadia | ACTIVA, FINALIZADA, CANCELADA |
+
+| Atributo        | Tipo          | Descripción                   |
+| --------------- | ------------- | ----------------------------- |
+| id              | Long          | Identificador único           |
+| fechaHoraInicio | LocalDateTime | Fecha y hora de check-in      |
+| fechaHoraFin    | LocalDateTime | Fecha y hora de check-out     |
+| modoUso         | ModoUso       | HORAS, NOCHE                  |
+| tarifaAplicada  | BigDecimal    | Tarifa que se aplicó          |
+| total           | BigDecimal    | Total a pagar                 |
+| estado          | EstadoEstadia | ACTIVA, FINALIZADA, CANCELADA |
 
 #### 6. Venta
-| Atributo | Tipo | Descripción |
-|----------|------|-------------|
-| id | Long | Identificador único |
+
+| Atributo  | Tipo          | Descripción              |
+| --------- | ------------- | ------------------------ |
+| id        | Long          | Identificador único      |
 | fechaHora | LocalDateTime | Fecha y hora de la venta |
-| total | BigDecimal | Total de la venta |
+| total     | BigDecimal    | Total de la venta        |
 
 #### 7. Extra
-| Atributo | Tipo | Descripción |
-|----------|------|-------------|
-| id | Long | Identificador único |
-| nombre | String | Nombre del producto (unique) |
-| descripcion | String | Descripción del producto |
-| precioUnitario | BigDecimal | Precio por unidad |
-| stockActual | Integer | Cantidad en inventario |
-| stockMinimo | Integer | Nivel mínimo de stock |
+
+| Atributo       | Tipo       | Descripción                  |
+| -------------- | ---------- | ---------------------------- |
+| id             | Long       | Identificador único          |
+| nombre         | String     | Nombre del producto (unique) |
+| descripcion    | String     | Descripción del producto     |
+| precioUnitario | BigDecimal | Precio por unidad            |
+| stockActual    | Integer    | Cantidad en inventario       |
+| stockMinimo    | Integer    | Nivel mínimo de stock        |
 
 #### 8. Gasto
-| Atributo | Tipo | Descripción |
-|----------|------|-------------|
-| id | Long | Identificador único |
-| fechaHora | LocalDateTime | Fecha y hora del gasto |
-| concepto | String | Descripción del gasto |
-| monto | BigDecimal | Cantidad gastada |
-| tipo | TipoTransaccion | INGRESO, GASTO |
+
+| Atributo  | Tipo            | Descripción            |
+| --------- | --------------- | ---------------------- |
+| id        | Long            | Identificador único    |
+| fechaHora | LocalDateTime   | Fecha y hora del gasto |
+| concepto  | String          | Descripción del gasto  |
+| monto     | BigDecimal      | Cantidad gastada       |
+| tipo      | TipoTransaccion | INGRESO, GASTO         |
 
 #### 9. Turno
-| Atributo | Tipo | Descripción |
-|----------|------|-------------|
-| id | Long | Identificador único |
-| fechaHoraInicio | LocalDateTime | Inicio del turno |
-| fechaHoraFin | LocalDateTime | Fin del turno |
-| tipoTurno | Turno | MATUTINO, VESPERTINO, NOCTURNO |
-| estado | EstadoTurno | ABIERTO, CERRADO |
+
+| Atributo        | Tipo          | Descripción                    |
+| --------------- | ------------- | ------------------------------ |
+| id              | Long          | Identificador único            |
+| fechaHoraInicio | LocalDateTime | Inicio del turno               |
+| fechaHoraFin    | LocalDateTime | Fin del turno                  |
+| tipoTurno       | Turno         | MATUTINO, VESPERTINO, NOCTURNO |
+| estado          | EstadoTurno   | ABIERTO, CERRADO               |
 
 ### Enums Necesarios
 
@@ -501,94 +510,103 @@ public enum EstadoTurno {
 ### Base Path: `/api/v1`
 
 #### Autenticación
-| Método | Endpoint | Descripción | Roles |
-|--------|----------|-------------|-------|
-| POST | `/auth/login` | Login y obtención de JWT | PUBLIC |
-| POST | `/auth/register` | Registrar nuevo usuario | ADMIN |
-| POST | `/auth/logout` | Cerrar sesión | AUTENTICADO |
+
+| Método | Endpoint         | Descripción              | Roles       |
+| ------ | ---------------- | ------------------------ | ----------- |
+| POST   | `/auth/login`    | Login y obtención de JWT | PUBLIC      |
+| POST   | `/auth/register` | Registrar nuevo usuario  | ADMIN       |
+| POST   | `/auth/logout`   | Cerrar sesión            | AUTENTICADO |
 
 #### Habitaciones
-| Método | Endpoint | Descripción | Roles |
-|--------|----------|-------------|-------|
-| GET | `/habitaciones` | Listar todas las habitaciones | ADMIN, RECEPCIONISTA, GERENTE |
-| GET | `/habitaciones/{id}` | Obtener habitación por ID | ADMIN, RECEPCIONISTA, GERENTE |
-| GET | `/habitaciones/disponibles` | Listar habitaciones disponibles | ADMIN, RECEPCIONISTA |
-| GET | `/habitaciones/tipo/{tipo}` | Filtrar por tipo de habitación | ADMIN, RECEPCIONISTA |
-| POST | `/habitaciones` | Crear nueva habitación | ADMIN, GERENTE |
-| PUT | `/habitaciones/{id}` | Actualizar habitación | ADMIN, GERENTE |
-| PUT | `/habitaciones/{id}/estado` | Actualizar estado de habitación | ADMIN, RECEPCIONISTA, MANTENIMIENTO |
-| DELETE | `/habitaciones/{id}` | Eliminar habitación | ADMIN |
+
+| Método | Endpoint                    | Descripción                     | Roles                               |
+| ------ | --------------------------- | ------------------------------- | ----------------------------------- |
+| GET    | `/habitaciones`             | Listar todas las habitaciones   | ADMIN, RECEPCIONISTA, GERENTE       |
+| GET    | `/habitaciones/{id}`        | Obtener habitación por ID       | ADMIN, RECEPCIONISTA, GERENTE       |
+| GET    | `/habitaciones/disponibles` | Listar habitaciones disponibles | ADMIN, RECEPCIONISTA                |
+| GET    | `/habitaciones/tipo/{tipo}` | Filtrar por tipo de habitación  | ADMIN, RECEPCIONISTA                |
+| POST   | `/habitaciones`             | Crear nueva habitación          | ADMIN, GERENTE                      |
+| PUT    | `/habitaciones/{id}`        | Actualizar habitación           | ADMIN, GERENTE                      |
+| PUT    | `/habitaciones/{id}/estado` | Actualizar estado de habitación | ADMIN, RECEPCIONISTA, MANTENIMIENTO |
+| DELETE | `/habitaciones/{id}`        | Eliminar habitación             | ADMIN                               |
 
 #### Clientes
-| Método | Endpoint | Descripción | Roles |
-|--------|----------|-------------|-------|
-| GET | `/clientes` | Listar clientes (paginado) | ADMIN, RECEPCIONISTA |
-| GET | `/clientes/{id}` | Obtener cliente por ID | ADMIN, RECEPCIONISTA |
-| GET | `/clientes/search` | Buscar por DNI o nombre | ADMIN, RECEPCIONISTA |
-| GET | `/clientes/historial/{id}` | Historial de estadías del cliente | ADMIN, RECEPCIONISTA |
-| POST | `/clientes` | Registrar nuevo cliente | ADMIN, RECEPCIONISTA |
-| PUT | `/clientes/{id}` | Actualizar cliente | ADMIN, RECEPCIONISTA |
-| PUT | `/clientes/{id}/problematico` | Marcar/desmarcar como problemático | ADMIN, GERENTE |
+
+| Método | Endpoint                      | Descripción                        | Roles                |
+| ------ | ----------------------------- | ---------------------------------- | -------------------- |
+| GET    | `/clientes`                   | Listar clientes (paginado)         | ADMIN, RECEPCIONISTA |
+| GET    | `/clientes/{id}`              | Obtener cliente por ID             | ADMIN, RECEPCIONISTA |
+| GET    | `/clientes/search`            | Buscar por DNI o nombre            | ADMIN, RECEPCIONISTA |
+| GET    | `/clientes/historial/{id}`    | Historial de estadías del cliente  | ADMIN, RECEPCIONISTA |
+| POST   | `/clientes`                   | Registrar nuevo cliente            | ADMIN, RECEPCIONISTA |
+| PUT    | `/clientes/{id}`              | Actualizar cliente                 | ADMIN, RECEPCIONISTA |
+| PUT    | `/clientes/{id}/problematico` | Marcar/desmarcar como problemático | ADMIN, GERENTE       |
 
 #### Estadías (Check-in/out)
-| Método | Endpoint | Descripción | Roles |
-|--------|----------|-------------|-------|
-| POST | `/estadias/checkin` | Realizar check-in | ADMIN, RECEPCIONISTA |
-| PUT | `/estadias/{id}/checkout` | Realizar check-out y facturar | ADMIN, RECEPCIONISTA |
-| GET | `/estadias` | Listar estadías | ADMIN, RECEPCIONISTA |
-| GET | `/estadias/activas` | Listar estadías activas | ADMIN, RECEPCIONISTA |
-| GET | `/estadias/{id}` | Obtener detalle de estadía | ADMIN, RECEPCIONISTA |
-| GET | `/estadias/cliente/{clienteId}` | Historial de estadías por cliente | ADMIN, RECEPCIONISTA |
+
+| Método | Endpoint                        | Descripción                       | Roles                |
+| ------ | ------------------------------- | --------------------------------- | -------------------- |
+| POST   | `/estadias/checkin`             | Realizar check-in                 | ADMIN, RECEPCIONISTA |
+| PUT    | `/estadias/{id}/checkout`       | Realizar check-out y facturar     | ADMIN, RECEPCIONISTA |
+| GET    | `/estadias`                     | Listar estadías                   | ADMIN, RECEPCIONISTA |
+| GET    | `/estadias/activas`             | Listar estadías activas           | ADMIN, RECEPCIONISTA |
+| GET    | `/estadias/{id}`                | Obtener detalle de estadía        | ADMIN, RECEPCIONISTA |
+| GET    | `/estadias/cliente/{clienteId}` | Historial de estadías por cliente | ADMIN, RECEPCIONISTA |
 
 #### Ventas (Extras)
-| Método | Endpoint | Descripción | Roles |
-|--------|----------|-------------|-------|
-| GET | `/extras` | Listar catálogo de extras | ADMIN, RECEPCIONISTA |
-| GET | `/extras/{id}` | Obtener extra por ID | ADMIN, RECEPCIONISTA |
-| POST | `/extras` | Crear nuevo extra | ADMIN, GERENTE |
-| PUT | `/extras/{id}` | Actualizar extra | ADMIN, GERENTE |
-| PUT | `/extras/{id}/stock` | Actualizar stock | ADMIN, GERENTE |
-| DELETE | `/extras/{id}` | Eliminar extra | ADMIN |
-| POST | `/ventas` | Registrar venta de extras | ADMIN, RECEPCIONISTA |
-| GET | `/ventas` | Listar ventas | ADMIN, GERENTE |
-| GET | `/ventas/{id}` | Obtener venta por ID | ADMIN, GERENTE |
+
+| Método | Endpoint             | Descripción               | Roles                |
+| ------ | -------------------- | ------------------------- | -------------------- |
+| GET    | `/extras`            | Listar catálogo de extras | ADMIN, RECEPCIONISTA |
+| GET    | `/extras/{id}`       | Obtener extra por ID      | ADMIN, RECEPCIONISTA |
+| POST   | `/extras`            | Crear nuevo extra         | ADMIN, GERENTE       |
+| PUT    | `/extras/{id}`       | Actualizar extra          | ADMIN, GERENTE       |
+| PUT    | `/extras/{id}/stock` | Actualizar stock          | ADMIN, GERENTE       |
+| DELETE | `/extras/{id}`       | Eliminar extra            | ADMIN                |
+| POST   | `/ventas`            | Registrar venta de extras | ADMIN, RECEPCIONISTA |
+| GET    | `/ventas`            | Listar ventas             | ADMIN, GERENTE       |
+| GET    | `/ventas/{id}`       | Obtener venta por ID      | ADMIN, GERENTE       |
 
 #### Gastos
-| Método | Endpoint | Descripción | Roles |
-|--------|----------|-------------|-------|
-| POST | `/gastos` | Registrar un gasto | ADMIN, GERENTE |
-| GET | `/gastos` | Listar gastos | ADMIN, GERENTE |
-| GET | `/gastos/{id}` | Obtener gasto por ID | ADMIN, GERENTE |
-| GET | `/gastos/turno/{turnoId}` | Gastos por turno | ADMIN, GERENTE |
+
+| Método | Endpoint                  | Descripción          | Roles          |
+| ------ | ------------------------- | -------------------- | -------------- |
+| POST   | `/gastos`                 | Registrar un gasto   | ADMIN, GERENTE |
+| GET    | `/gastos`                 | Listar gastos        | ADMIN, GERENTE |
+| GET    | `/gastos/{id}`            | Obtener gasto por ID | ADMIN, GERENTE |
+| GET    | `/gastos/turno/{turnoId}` | Gastos por turno     | ADMIN, GERENTE |
 
 #### Turnos
-| Método | Endpoint | Descripción | Roles |
-|--------|----------|-------------|-------|
-| POST | `/turnos/abrir` | Abrir un turno | ADMIN, RECEPCIONISTA |
-| PUT | `/turnos/{id}/cerrar` | Cerrar turno y generar reporte | ADMIN, RECEPCIONISTA |
-| GET | `/turnos` | Listar turnos | ADMIN, GERENTE |
-| GET | `/turnos/{id}` | Obtener turno por ID | ADMIN, GERENTE |
-| GET | `/turnos/{id}/reporte` | Reporte detallado de turno | ADMIN, GERENTE |
+
+| Método | Endpoint               | Descripción                    | Roles                |
+| ------ | ---------------------- | ------------------------------ | -------------------- |
+| POST   | `/turnos/abrir`        | Abrir un turno                 | ADMIN, RECEPCIONISTA |
+| PUT    | `/turnos/{id}/cerrar`  | Cerrar turno y generar reporte | ADMIN, RECEPCIONISTA |
+| GET    | `/turnos`              | Listar turnos                  | ADMIN, GERENTE       |
+| GET    | `/turnos/{id}`         | Obtener turno por ID           | ADMIN, GERENTE       |
+| GET    | `/turnos/{id}/reporte` | Reporte detallado de turno     | ADMIN, GERENTE       |
 
 #### Empleados
-| Método | Endpoint | Descripción | Roles |
-|--------|----------|-------------|-------|
-| POST | `/empleados` | Registrar empleado | ADMIN |
-| PUT | `/empleados/{id}` | Actualizar datos del empleado | ADMIN |
-| GET | `/empleados` | Listar empleados | ADMIN, GERENTE |
-| GET | `/empleados/{id}` | Obtener empleado por ID | ADMIN, GERENTE |
-| DELETE | `/empleados/{id}` | Desactivar empleado | ADMIN |
+
+| Método | Endpoint          | Descripción                   | Roles          |
+| ------ | ----------------- | ----------------------------- | -------------- |
+| POST   | `/empleados`      | Registrar empleado            | ADMIN          |
+| PUT    | `/empleados/{id}` | Actualizar datos del empleado | ADMIN          |
+| GET    | `/empleados`      | Listar empleados              | ADMIN, GERENTE |
+| GET    | `/empleados/{id}` | Obtener empleado por ID       | ADMIN, GERENTE |
+| DELETE | `/empleados/{id}` | Desactivar empleado           | ADMIN          |
 
 #### Estadísticas
-| Método | Endpoint | Descripción | Roles |
-|--------|----------|-------------|-------|
-| GET | `/estadisticas/resumen` | Resumen general (KPIs) | ADMIN, GERENTE |
-| GET | `/estadisticas/ingresos-gastos` | Ingresos vs Gastos por rango | ADMIN, GERENTE |
-| GET | `/estadisticas/ocupacion` | Porcentaje de ocupación | ADMIN, GERENTE |
-| GET | `/estadisticas/top-extras` | Top extras más vendidos | ADMIN, GERENTE |
-| GET | `/estadisticas/habitacion-rentable` | Habitación más rentable | ADMIN, GERENTE |
-| GET | `/estadisticas/promedio-estadia` | Promedio de estadía por tipo | ADMIN, GERENTE |
-| GET | `/estadisticas/turno-mas-ventas` | Turno con más ventas | ADMIN, GERENTE |
+
+| Método | Endpoint                            | Descripción                  | Roles          |
+| ------ | ----------------------------------- | ---------------------------- | -------------- |
+| GET    | `/estadisticas/resumen`             | Resumen general (KPIs)       | ADMIN, GERENTE |
+| GET    | `/estadisticas/ingresos-gastos`     | Ingresos vs Gastos por rango | ADMIN, GERENTE |
+| GET    | `/estadisticas/ocupacion`           | Porcentaje de ocupación      | ADMIN, GERENTE |
+| GET    | `/estadisticas/top-extras`          | Top extras más vendidos      | ADMIN, GERENTE |
+| GET    | `/estadisticas/habitacion-rentable` | Habitación más rentable      | ADMIN, GERENTE |
+| GET    | `/estadisticas/promedio-estadia`    | Promedio de estadía por tipo | ADMIN, GERENTE |
+| GET    | `/estadisticas/turno-mas-ventas`    | Turno con más ventas         | ADMIN, GERENTE |
 
 ---
 
@@ -604,7 +622,7 @@ sequenceDiagram
     participant JwtService
     participant Database
     
-    Client->>AuthController: POST /auth/login
+    Client->>AuthController: POST /api/v1/auth/login
     Note over Client,AuthController: Credenciales (username, password)
     
     AuthController->>AuthService: authenticate(username, password)
@@ -634,42 +652,107 @@ sequenceDiagram
 
 ```mermaid
 graph TD
-    A[Cliente] -->|Request + JWT| B[Filtro JWT]
-    B -->|Validar Token| C[JwtService]
-    C -->|Token Válido| D[Establecer Autenticación]
+    A[Cliente] --> B[Filtro JWT]
+    B --> C[JwtService]
+    C --> D[Establecer Autenticacion]
     D --> E[Controller]
-    E -->|@PreAuthorize| F[Verificar Roles]
-    F -->|Permitido| G[Ejecutar Lógica]
-    F -->|Denegado| H[403 Forbidden]
+    E --> F[Verificar Roles]
+    F --> G[Ejecutar Logica]
+    F --> H[403 Forbidden]
     
-    I[Usuario no autenticado] -->|Request sin JWT| J[SecurityConfig]
-    J -->|Redirigir| K[Login Endpoint]
+    I[Usuario no autenticado] --> J[SecurityConfig]
+    J --> K[Login Endpoint]
+    
+    A -- Request + JWT --> B
+    B -- Validar Token --> C
+    C -- Token Valido --> D
+    E -- @PreAuthorize --> F
+    F -- Permitido --> G
+    F -- Denegado --> H
+    I -- Request sin JWT --> J
+    J -- Redirigir --> K
 ```
 
 ### Roles y Permisos
 
-| Rol | Habitaciones | Clientes | Estadías | Ventas | Gastos | Turnos | Empleados | Estadísticas |
-|-----|--------------|----------|----------|--------|--------|--------|-----------|--------------|
-| **ADMIN** | CRUD | CRUD | CRUD | CRUD | CRUD | CRUD | CRUD | VER |
-| **GERENTE** | VER, ACTUALIZAR | VER, ACTUALIZAR | VER | VER, REGISTRAR | CREAR, VER | VER | VER | VER |
-| **RECEPCIONISTA** | VER, ACT. ESTADO | CRUD | CREAR, VER, ACT. | CREAR, VER | NO | CREAR, CERRAR | NO | NO |
-| **MANTENIMIENTO** | ACT. ESTADO | NO | NO | NO | NO | VER | NO | NO |
+| Rol               | Habitaciones     | Clientes        | Estadías         | Ventas         | Gastos     | Turnos        | Empleados | Estadísticas |
+| ----------------- | ---------------- | --------------- | ---------------- | -------------- | ---------- | ------------- | --------- | ------------ |
+| **ADMIN**         | CRUD             | CRUD            | CRUD             | CRUD           | CRUD       | CRUD          | CRUD      | VER          |
+| **GERENTE**       | VER, ACTUALIZAR  | VER, ACTUALIZAR | VER              | VER, REGISTRAR | CREAR, VER | VER           | VER       | VER          |
+| **RECEPCIONISTA** | VER, ACT. ESTADO | CRUD            | CREAR, VER, ACT. | CREAR, VER     | NO         | CREAR, CERRAR | NO        | NO           |
+| **MANTENIMIENTO** | ACT. ESTADO      | NO              | NO               | NO             | NO         | VER           | NO        | NO           |
 
+```mermaid
+graph LR
+    subgraph "Roles del Sistema"
+        R1[ADMIN]
+        R2[GERENTE]
+        R3[RECEPCIONISTA]
+        R4[MANTENIMIENTO]
+    end
+    
+    subgraph "Módulos"
+        M1[Habitaciones]
+        M2[Clientes]
+        M3[Estadías]
+        M4[Ventas]
+        M5[Gastos]
+        M6[Turnos]
+        M7[Empleados]
+        M8[Estadísticas]
+    end
+    
+    R1 -->|CRUD| M1
+    R1 -->|CRUD| M2
+    R1 -->|CRUD| M3
+    R1 -->|CRUD| M4
+    R1 -->|CRUD| M5
+    R1 -->|CRUD| M6
+    R1 -->|CRUD| M7
+    R1 -->|VER| M8
+    
+    R2 -->|VER, ACT| M1
+    R2 -->|VER, ACT| M2
+    R2 -->|VER| M3
+    R2 -->|VER, CREAR| M4
+    R2 -->|CREAR, VER| M5
+    R2 -->|VER| M6
+    R2 -->|VER| M7
+    R2 -->|VER| M8
+    
+    R3 -->|VER, ACT.ESTADO| M1
+    R3 -->|CRUD| M2
+    R3 -->|CREAR, VER, ACT| M3
+    R3 -->|CREAR, VER| M4
+    R3 -.->|NO| M5
+    R3 -->|CREAR, CERRAR| M6
+    R3 -.->|NO| M7
+    R3 -.->|NO| M8
+    
+    R4 -->|ACT.ESTADO| M1
+    R4 -.->|NO| M2
+    R4 -.->|NO| M3
+    R4 -.->|NO| M4
+    R4 -.->|NO| M5
+    R4 -->|VER| M6
+    R4 -.->|NO| M7
+    R4 -.->|NO| M8
+```
 ### Permisos por Endpoint (Ejemplo)
 
 ```java
 @RestController
 @RequestMapping("/api/v1/habitaciones")
 public class HabitacionController {
-    
+
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'RECEPCIONISTA', 'GERENTE')")
     public ResponseEntity<List<HabitacionResponse>> listarHabitaciones() { ... }
-    
+
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE')")
     public ResponseEntity<HabitacionResponse> crearHabitacion(@RequestBody HabitacionRequest request) { ... }
-    
+
     @PutMapping("/{id}/estado")
     @PreAuthorize("hasAnyRole('ADMIN', 'RECEPCIONISTA', 'MANTENIMIENTO')")
     public ResponseEntity<Void> actualizarEstado(@PathVariable Long id, @RequestBody EstadoRequest request) { ... }
@@ -681,6 +764,7 @@ public class HabitacionController {
 ## 🗄️ BASE DE DATOS
 
 ### Motor de Base de Datos
+
 - **PostgreSQL 14+** (recomendado por su robustez y rendimiento)
 - Alternativa: MySQL 8+
 
@@ -695,7 +779,7 @@ src/main/resources/db/migration/
 └── ...
 ```
 
-### Script de Estructura (V1__create_initial_tables.sql)
+### Script de Estructura (V1\_\_create_initial_tables.sql)
 
 ```sql
 -- =====================================================
@@ -867,10 +951,10 @@ sequenceDiagram
     participant Recepcionista
     participant Sistema
     participant BD
-    
+
     Recepcionista->>Sistema: Buscar cliente por DNI
     Sistema->>BD: SELECT * FROM clientes WHERE dni = ?
-    
+
     alt Cliente existe
         BD-->>Sistema: Datos del cliente
         Sistema-->>Recepcionista: Mostrar datos del cliente
@@ -879,12 +963,12 @@ sequenceDiagram
         Recepcionista->>Sistema: Completar datos
         Sistema->>BD: INSERT INTO clientes
         BD-->>Sistema: Cliente creado
-    end    
+    end
     Recepcionista->>Sistema: Seleccionar tipo de habitación
     Sistema->>BD: SELECT * FROM habitaciones WHERE estado = 'DISPONIBLE' AND tipo = ?
     BD-->>Sistema: Lista de habitaciones disponibles
     Sistema-->>Recepcionista: Mostrar habitaciones
-    
+
     Recepcionista->>Sistema: Seleccionar habitación y modo de uso
     Sistema->>Sistema: Calcular tarifa
     Sistema->>BD: INSERT INTO estadias (fecha_inicio, cliente_id, habitacion_id, modo_uso, tarifa)
@@ -899,18 +983,18 @@ sequenceDiagram
     participant Recepcionista
     participant Sistema
     participant BD
-    
+
     Recepcionista->>Sistema: Buscar estadía activa por habitación
     Sistema->>BD: SELECT * FROM estadias WHERE habitacion_id = ? AND estado = 'ACTIVA'
     BD-->>Sistema: Datos de la estadía
-    
+
     Sistema->>Sistema: Calcular total (habitación + extras)
     Sistema->>BD: SELECT * FROM ventas WHERE estadia_id = ?
     BD-->>Sistema: Lista de ventas de extras
-    
+
     Sistema->>Sistema: Generar factura
     Sistema-->>Recepcionista: Mostrar resumen y total
-    
+
     Recepcionista->>Sistema: Confirmar pago
     Sistema->>BD: UPDATE estadias SET estado = 'FINALIZADA', fecha_fin = NOW(), total = ?
     Sistema->>BD: UPDATE habitaciones SET estado = 'LIMPIEZA' WHERE id = ?
@@ -924,15 +1008,15 @@ sequenceDiagram
     participant Recepcionista
     participant Sistema
     participant BD
-    
+
     Recepcionista->>Sistema: Seleccionar estadía activa
     Sistema->>BD: SELECT * FROM estadias WHERE id = ?
     BD-->>Sistema: Datos de la estadía
-    
+
     Recepcionista->>Sistema: Buscar extras disponibles
     Sistema->>BD: SELECT * FROM extras WHERE stock_actual > 0
     BD-->>Sistema: Lista de extras
-    
+
     Recepcionista->>Sistema: Seleccionar extra y cantidad
     Sistema->>Sistema: Verificar stock
     Sistema->>BD: INSERT INTO ventas (fecha, total, cliente_id, estadia_id, turno_id)
@@ -948,17 +1032,17 @@ sequenceDiagram
     participant Empleado
     participant Sistema
     participant BD
-    
+
     Empleado->>Sistema: Abrir turno
     Sistema->>BD: INSERT INTO turnos (fecha_inicio, tipo_turno, empleado_id)
     Sistema-->>Empleado: Turno abierto
-    
+
     loop Durante el turno
         Empleado->>Sistema: Registrar gasto
         Sistema->>BD: INSERT INTO gastos (concepto, monto, turno_id, empleado_id)
         Sistema-->>Empleado: Gasto registrado
     end
-    
+
     Empleado->>Sistema: Cerrar turno
     Sistema->>BD: SELECT * FROM gastos WHERE turno_id = ?
     Sistema->>Sistema: Calcular total de gastos
@@ -977,24 +1061,24 @@ flowchart TD
     B -->|Sí| C[Advertir al empleado]
     C --> D[Forzar cierre o esperar]
     B -->|No| E[Calcular total de ingresos]
-    
+
     E --> F[Calcular total de gastos]
     F --> G[Calcular utilidad del turno]
     G --> H[Generar reporte detallado]
-    
+
     H --> I[Reporte incluye:]
     I --> I1[Total de estadías]
     I --> I2[Total de ventas de extras]
     I --> I3[Total de gastos]
     I --> I4[Utilidad neta]
     I --> I5[Lista de transacciones]
-    
+
     I1 --> J[Guardar reporte en BD]
     I2 --> J
     I3 --> J
     I4 --> J
     I5 --> J
-    
+
     J --> K[Actualizar turno a CERRADO]
     K --> L[Fin: Reporte generado y turno cerrado]
 ```
@@ -1003,22 +1087,22 @@ flowchart TD
 
 ## 🛠️ TECNOLOGÍAS SUGERIDAS
 
-| Componente | Tecnología | Versión / Notas |
-|------------|------------|-----------------|
-| **Framework Base** | Spring Boot | 3.1.x o superior |
-| **Lenguaje** | Java | 17 o superior (LTS) |
-| **Gestor de Dependencias** | Maven | 3.8+ o Gradle |
-| **Base de Datos** | PostgreSQL | 14+ |
-| **ORM** | Spring Data JPA (Hibernate) | - |
-| **Migraciones DB** | Flyway | 9.x |
-| **Seguridad** | Spring Security + JWT | JJWT para generación/validación |
-| **Mapeo DTOs** | MapStruct | 1.5.x |
-| **Documentación API** | Springdoc OpenAPI (Swagger) | 2.x |
-| **Validación** | Jakarta Bean Validation (Hibernate Validator) | - |
-| **Logging** | SLF4J + Logback | - |
-| **Testing** | JUnit 5, Mockito, Testcontainers | - |
-| **Monitoreo** | Spring Boot Actuator, Micrometer | Opcional |
-| **Empaquetado** | JAR | - |
+| Componente                 | Tecnología                                    | Versión / Notas                 |
+| -------------------------- | --------------------------------------------- | ------------------------------- |
+| **Framework Base**         | Spring Boot                                   | 3.1.x o superior                |
+| **Lenguaje**               | Java                                          | 17 o superior (LTS)             |
+| **Gestor de Dependencias** | Maven                                         | 3.8+ o Gradle                   |
+| **Base de Datos**          | PostgreSQL                                    | 14+                             |
+| **ORM**                    | Spring Data JPA (Hibernate)                   | -                               |
+| **Migraciones DB**         | Flyway                                        | 9.x                             |
+| **Seguridad**              | Spring Security + JWT                         | JJWT para generación/validación |
+| **Mapeo DTOs**             | MapStruct                                     | 1.5.x                           |
+| **Documentación API**      | Springdoc OpenAPI (Swagger)                   | 2.x                             |
+| **Validación**             | Jakarta Bean Validation (Hibernate Validator) | -                               |
+| **Logging**                | SLF4J + Logback                               | -                               |
+| **Testing**                | JUnit 5, Mockito, Testcontainers              | -                               |
+| **Monitoreo**              | Spring Boot Actuator, Micrometer              | Opcional                        |
+| **Empaquetado**            | JAR                                           | -                               |
 
 ### Dependencias Maven Clave
 
@@ -1109,13 +1193,13 @@ flowchart TD
 spring:
   application:
     name: hotel-system
-  
+
   datasource:
     url: jdbc:postgresql://localhost:5432/hotel_db
     username: hotel_user
     password: hotel_password
     driver-class-name: org.postgresql.Driver
-  
+
   jpa:
     hibernate:
       ddl-auto: validate
@@ -1124,16 +1208,16 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
     show-sql: false
-  
+
   flyway:
     enabled: true
     baseline-on-migrate: true
-  
+
   security:
     jwt:
       secret: ${JWT_SECRET:your-256-bit-secret-key-for-jwt-signing}
       expiration: 86400000 # 24 horas en milisegundos
-  
+
 server:
   port: 8080
   servlet:
@@ -1150,84 +1234,89 @@ logging:
 ## 📋 PLAN DE IMPLEMENTACIÓN POR FASES
 
 ### Fase 1: Core (Infraestructura y Entidades Fundamentales)
+
 **Duración Estimada:** 1 semana
 
-| Tarea | Descripción | Entregable |
-|-------|-------------|------------|
-| 1.1 | Configuración del proyecto Spring Boot | Proyecto base con dependencias |
-| 1.2 | Configuración de PostgreSQL y Flyway | Conexión a BD funcionando |
-| 1.3 | Creación de scripts de migración iniciales | Tablas: Usuario, Empleado, Cliente, Habitacion |
-| 1.4 | Implementación de entidades JPA | Entidades con anotaciones JPA |
-| 1.5 | Configuración de Spring Security con JWT | Login y registro funcionando |
-| 1.6 | CRUD básico de Habitacion, Cliente y Empleado | Endpoints básicos funcionando |
-| 1.7 | Pruebas unitarias de repositorios y servicios | Tests unitarios pasando |
+| Tarea | Descripción                                   | Entregable                                     |
+| ----- | --------------------------------------------- | ---------------------------------------------- |
+| 1.1   | Configuración del proyecto Spring Boot        | Proyecto base con dependencias                 |
+| 1.2   | Configuración de PostgreSQL y Flyway          | Conexión a BD funcionando                      |
+| 1.3   | Creación de scripts de migración iniciales    | Tablas: Usuario, Empleado, Cliente, Habitacion |
+| 1.4   | Implementación de entidades JPA               | Entidades con anotaciones JPA                  |
+| 1.5   | Configuración de Spring Security con JWT      | Login y registro funcionando                   |
+| 1.6   | CRUD básico de Habitacion, Cliente y Empleado | Endpoints básicos funcionando                  |
+| 1.7   | Pruebas unitarias de repositorios y servicios | Tests unitarios pasando                        |
 
 ### Fase 2: Lógica de Negocio (Reservas, Check-in/out)
+
 **Duración Estimada:** 1.5 semanas
 
-| Tarea | Descripción | Entregable |
-|-------|-------------|------------|
-| 2.1 | Implementación de entidad Estadia | Entidad Estadia y repositorio |
-| 2.2 | Desarrollo de servicios de Check-in/out | Lógica de negocio de estadías |
-| 2.3 | Implementación de cálculo de tarifas (Strategy) | Estrategias de cálculo |
-| 2.4 | Integración con cambio de estado de habitaciones | Actualización automática de estados |
-| 2.5 | Endpoints de búsqueda de clientes y habitaciones | Búsquedas optimizadas |
-| 2.6 | Gestión básica de turnos (apertura/cierre) | Turnos funcionando |
-| 2.7 | Pruebas de integración de flujo de check-in/out | Pruebas de integración pasando |
+| Tarea | Descripción                                      | Entregable                          |
+| ----- | ------------------------------------------------ | ----------------------------------- |
+| 2.1   | Implementación de entidad Estadia                | Entidad Estadia y repositorio       |
+| 2.2   | Desarrollo de servicios de Check-in/out          | Lógica de negocio de estadías       |
+| 2.3   | Implementación de cálculo de tarifas (Strategy)  | Estrategias de cálculo              |
+| 2.4   | Integración con cambio de estado de habitaciones | Actualización automática de estados |
+| 2.5   | Endpoints de búsqueda de clientes y habitaciones | Búsquedas optimizadas               |
+| 2.6   | Gestión básica de turnos (apertura/cierre)       | Turnos funcionando                  |
+| 2.7   | Pruebas de integración de flujo de check-in/out  | Pruebas de integración pasando      |
 
 ### Fase 3: Módulos Complementarios (Ventas, Gastos, Turnos)
+
 **Duración Estimada:** 2 semanas
 
-| Tarea | Descripción | Entregable |
-|-------|-------------|------------|
-| 3.1 | Catálogo de extras y gestión de inventario | CRUD de extras completo |
-| 3.2 | Sistema de ventas y registro de detalles | Ventas con descuento de stock |
-| 3.3 | Integración de ventas con estadías | Suma de extras al total de estadía |
-| 3.4 | Módulo de gastos | Registro y consulta de gastos |
-| 3.5 | Mejora de turnos con asociaciones | Ventas y gastos asociados a turnos |
-| 3.6 | Reporte de cierre de turno | Generación de reportes |
-| 3.7 | Lógica de "clientes problemáticos" | Flag y motivo en clientes |
-| 3.8 | Pruebas funcionales | Pruebas de módulos completos |
+| Tarea | Descripción                                | Entregable                         |
+| ----- | ------------------------------------------ | ---------------------------------- |
+| 3.1   | Catálogo de extras y gestión de inventario | CRUD de extras completo            |
+| 3.2   | Sistema de ventas y registro de detalles   | Ventas con descuento de stock      |
+| 3.3   | Integración de ventas con estadías         | Suma de extras al total de estadía |
+| 3.4   | Módulo de gastos                           | Registro y consulta de gastos      |
+| 3.5   | Mejora de turnos con asociaciones          | Ventas y gastos asociados a turnos |
+| 3.6   | Reporte de cierre de turno                 | Generación de reportes             |
+| 3.7   | Lógica de "clientes problemáticos"         | Flag y motivo en clientes          |
+| 3.8   | Pruebas funcionales                        | Pruebas de módulos completos       |
 
 ### Fase 4: Estadísticas y Reportes
+
 **Duración Estimada:** 1 semana
 
-| Tarea | Descripción | Entregable |
-|-------|-------------|------------|
-| 4.1 | Servicios de consulta para estadísticas | Servicios de estadísticas |
-| 4.2 | Endpoints para todos los KPIs | Endpoints de estadísticas |
-| 4.3 | Implementación de filtros por fecha/turno | Filtros funcionando |
-| 4.4 | Optimización de consultas SQL/JPQL | Consultas optimizadas |
-| 4.5 | Generación de reportes en PDF/Excel (opcional) | Reportes exportables |
-| 4.6 | Pruebas de rendimiento | Validación de rendimiento |
-| 4.7 | Documentación de la API con Swagger | Documentación completa |
+| Tarea | Descripción                                    | Entregable                |
+| ----- | ---------------------------------------------- | ------------------------- |
+| 4.1   | Servicios de consulta para estadísticas        | Servicios de estadísticas |
+| 4.2   | Endpoints para todos los KPIs                  | Endpoints de estadísticas |
+| 4.3   | Implementación de filtros por fecha/turno      | Filtros funcionando       |
+| 4.4   | Optimización de consultas SQL/JPQL             | Consultas optimizadas     |
+| 4.5   | Generación de reportes en PDF/Excel (opcional) | Reportes exportables      |
+| 4.6   | Pruebas de rendimiento                         | Validación de rendimiento |
+| 4.7   | Documentación de la API con Swagger            | Documentación completa    |
 
 ### Fase 5: Despliegue y Puesta a Punto
+
 **Duración Estimada:** 3-5 días
 
-| Tarea | Descripción | Entregable |
-|-------|-------------|------------|
-| 5.1 | Configuración de perfiles de entorno | application-dev.yml, application-prod.yml |
-| 5.2 | Pruebas de aceptación (UAT) | Validación con cliente |
-| 5.3 | Corrección de errores críticos | Issues resueltos |
-| 5.4 | Preparación del artefacto para despliegue | JAR listo para producción |
-| 5.5 | Documentación de usuario | Manual de usuario |
-| 5.6 | Manual de instalación y despliegue | Guía de despliegue |
-| 5.7 | Despliegue en entorno de producción | Sistema en producción |
+| Tarea | Descripción                               | Entregable                                |
+| ----- | ----------------------------------------- | ----------------------------------------- |
+| 5.1   | Configuración de perfiles de entorno      | application-dev.yml, application-prod.yml |
+| 5.2   | Pruebas de aceptación (UAT)               | Validación con cliente                    |
+| 5.3   | Corrección de errores críticos            | Issues resueltos                          |
+| 5.4   | Preparación del artefacto para despliegue | JAR listo para producción                 |
+| 5.5   | Documentación de usuario                  | Manual de usuario                         |
+| 5.6   | Manual de instalación y despliegue        | Guía de despliegue                        |
+| 5.7   | Despliegue en entorno de producción       | Sistema en producción                     |
 
 ---
 
 ## 📝 RESUMEN EJECUTIVO
 
-| Aspecto | Detalle |
-|---------|---------|
-| **Proyecto** | Sistema de Gestión Hotelera |
-| **Arquitectura** | Capas (Controller-Service-Repository) |
-| **Backend** | Java 17 + Spring Boot 3.1+ |
-| **Base de Datos** | PostgreSQL 14+ con Flyway |
-| **Seguridad** | Spring Security + JWT |
-| **API** | RESTful con documentación Swagger |
-| **Tiempo Estimado** | 6-7 semanas (aprox.) |
-| **Equipo Recomendado** | 2-3 desarrolladores backend |
+| Aspecto                | Detalle                               |
+| ---------------------- | ------------------------------------- |
+| **Proyecto**           | Sistema de Gestión Hotelera           |
+| **Arquitectura**       | Capas (Controller-Service-Repository) |
+| **Backend**            | Java 17 + Spring Boot 3.1+            |
+| **Base de Datos**      | PostgreSQL 14+ con Flyway             |
+| **Seguridad**          | Spring Security + JWT                 |
+| **API**                | RESTful con documentación Swagger     |
+| **Tiempo Estimado**    | 6-7 semanas (aprox.)                  |
+| **Equipo Recomendado** | 2 desarrolladores backend             |
 
 ---
