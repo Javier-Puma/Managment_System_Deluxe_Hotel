@@ -1,7 +1,10 @@
 package com.hotel.system.service.cliente;
 
+import com.hotel.system.domain.dto.request.ClienteRequest;
 import com.hotel.system.domain.dto.response.ClienteResponse;
 import com.hotel.system.domain.entity.Cliente;
+import com.hotel.system.exception.BusinessException;
+import com.hotel.system.mapper.ClienteMapper;
 import com.hotel.system.repository.ClienteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

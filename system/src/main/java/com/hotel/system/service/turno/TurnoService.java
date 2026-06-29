@@ -1,11 +1,14 @@
 package com.hotel.system.service.turno;
 
+import com.hotel.system.domain.dto.request.AbrirTurnoRequest;
+import com.hotel.system.domain.dto.response.TurnoResponse;
 import com.hotel.system.domain.entity.Empleado;
 import com.hotel.system.domain.entity.TurnoEntidad;
 import com.hotel.system.domain.enums.EstadoTurno;
 import com.hotel.system.exception.BusinessException;
 import com.hotel.system.repository.TurnoRepository;
 import com.hotel.system.service.empleado.EmpleadoService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +25,7 @@ public class TurnoService {
     private final TurnoRepository turnoRepository;
     private final EmpleadoService empleadoService;
 
-    public TurnoResponse abrirTurno(AbrirTurnoRequest request) {
+    public TurnoResponse abrirTurno(@Valid AbrirTurnoRequest request) {
         // Verificar si hay un turno abierto
         if (turnoRepository.findByEstado(EstadoTurno.ABIERTO).isPresent()) {
             throw new BusinessException("Ya existe un turno abierto. Debe cerrarlo antes de abrir uno nuevo.");

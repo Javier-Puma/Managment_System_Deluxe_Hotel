@@ -1,5 +1,6 @@
 package com.hotel.system.mapper;
 
+import com.hotel.system.domain.dto.request.HabitacionRequest;
 import com.hotel.system.domain.dto.response.HabitacionResponse;
 import com.hotel.system.domain.entity.Habitacion;
 import org.mapstruct.Mapper;

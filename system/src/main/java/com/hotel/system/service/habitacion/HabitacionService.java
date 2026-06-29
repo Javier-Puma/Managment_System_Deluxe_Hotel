@@ -1,5 +1,6 @@
 package com.hotel.system.service.habitacion;
 
+import com.hotel.system.domain.dto.request.HabitacionRequest;
 import com.hotel.system.domain.dto.response.HabitacionResponse;
 import com.hotel.system.domain.entity.Habitacion;
 import com.hotel.system.domain.enums.EstadoHabitacion;

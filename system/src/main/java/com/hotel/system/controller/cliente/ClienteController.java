@@ -1,5 +1,6 @@
 package com.hotel.system.controller.cliente;
 
+import com.hotel.system.domain.dto.request.ClienteRequest;
 import com.hotel.system.domain.dto.response.ClienteResponse;
 import com.hotel.system.service.cliente.ClienteService;
 import jakarta.validation.Valid;
