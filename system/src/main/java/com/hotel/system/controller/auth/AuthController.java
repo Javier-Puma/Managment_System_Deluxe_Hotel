@@ -1,4 +1,4 @@
-package com.hotel.system.controller;
+package com.hotel.system.controller.auth;
 
 import com.hotel.system.domain.dto.request.AuthRequest;
 import com.hotel.system.domain.dto.response.AuthResponse;
