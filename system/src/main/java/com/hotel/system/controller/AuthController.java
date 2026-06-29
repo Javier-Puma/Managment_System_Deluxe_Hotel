@@ -6,10 +6,8 @@ import com.hotel.system.service.auth.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -21,5 +19,11 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@Valid @RequestBody AuthRequest request) {
         return ResponseEntity.ok(authService.authenticate(request));
+    }
+    //PRUEBAS
+    @GetMapping("/generate-password")
+    public ResponseEntity<String> generatePassword(@RequestParam String password) {
+        String encoded = new BCryptPasswordEncoder().encode(password);
+        return ResponseEntity.ok("Password: " + password + "\nEncoded: " + encoded);
     }
 }
